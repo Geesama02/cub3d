@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 09:47:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/29 15:16:44 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:29:24 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdlib.h>
 # include <errno.h>
 # include <string.h>
+# include <math.h>
 # include "MLX42/include/MLX42/MLX42.h"
 # include "get-next-line/get_next_line.h"
 
@@ -44,9 +45,11 @@ typedef struct s_character
 	t_data		frames[6];
 	int			current_frame;
 	char		side;
+	double		rotation_a;
 	double		x;
 	double		y;
-	int			mv;
+	int			mv_side;
+	int			mv_dir;
 }	t_character;
 
 typedef struct s_vars

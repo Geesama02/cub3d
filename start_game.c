@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:27:24 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/29 15:34:44 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/31 09:39:50 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,32 @@ void	key_hook(mlx_key_data_t keydata, void *vars)
 	t_vars *my_vars = vars;
 	// if (keycode == 53)
 	// 	close_program(vars);
-	if (keydata.key == MLX_KEY_W && wall_check(my_vars->character.frames[0].img->instances[0].x + 5,
-			my_vars->character.frames[0].img->instances[0].y, my_vars->wall_count, my_vars) == 0)
-		my_vars->character.frames[0].img->instances[0].x += 5;
+	// if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
+	// 	my_vars->character.rotation_a += (3 * (M_PI / 180)) * my_vars->character.mv_side;
+	// if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
+	my_vars->character.rotation_a += (3 * (M_PI / 180)) * my_vars->character.mv_side;
+	my_vars->character.frames[0].img->instances[0].x += cos(my_vars->character.rotation_a) * 5 * my_vars->character.mv_dir;
+	my_vars->character.frames[0].img->instances[0].y += sin(my_vars->character.rotation_a) * 5 * my_vars->character.mv_dir;
+	if (keydata.key == MLX_KEY_W)
+	{
+		my_vars->character.mv_dir = 1;
+	}
 	if (keydata.key == MLX_KEY_S)
-		my_vars->character.frames[0].img->instances[0].x -= 5;
+	{
+		my_vars->character.mv_dir = -1;
+	}
 	if (keydata.key == MLX_KEY_A)
-		my_vars->character.frames[0].img->instances[0].y -= 5;
+	{
+		my_vars->character.mv_side = 1;
+	}
 	if (keydata.key == MLX_KEY_D)
-		my_vars->character.frames[0].img->instances[0].y += 5;
+	{
+		my_vars->character.mv_side = -1;
+	}
+	if ((keydata.key == MLX_KEY_D || keydata.key == MLX_KEY_A) && keydata.action == MLX_RELEASE)
+		my_vars->character.mv_side = 0;
+	if ((keydata.key == MLX_KEY_W || keydata.key == MLX_KEY_S) && keydata.action == MLX_RELEASE)
+		my_vars->character.mv_dir = 0;
 }
 
 void	move_sides(int keycode, t_vars *vars)
@@ -35,7 +52,6 @@ void	move_sides(int keycode, t_vars *vars)
 	{
 		vars->character.side = 'l';
 		vars->character.x -= 25;
-		vars->character.mv = 1;
 		vars->steps++;
 	}
 	else if (keycode == 2 && wall_check(vars->character.x + 25,
@@ -43,7 +59,6 @@ void	move_sides(int keycode, t_vars *vars)
 	{
 		vars->character.side = 'r';
 		vars->character.x += 25;
-		vars->character.mv = 1;
 		vars->steps++;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:00:07 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/29 15:05:07 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/30 16:29:35 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,11 @@ int	fill_map(t_vars *vars, char **map, char *line, int fd)
 void	init_vars(t_vars *vars)
 {
 	vars->door_count = 0;
+	vars->character.rotation_a = M_PI / 2;
+	vars->character.mv_side = 0;
+	vars->character.mv_dir = 0;
 	vars->floor_count = 0;
 	vars->wall_count = 0;
-	vars->chest_count = 0;
 	vars->monster_count = 0;
 	vars->character_count = 0;
 	vars->steps = 0;
