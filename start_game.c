@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:27:24 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/31 09:39:50 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/31 17:05:22 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,23 @@
 void	key_hook(mlx_key_data_t keydata, void *vars)
 {
 	t_vars *my_vars = vars;
-	// if (keycode == 53)
-	// 	close_program(vars);
+	if (keydata.key == MLX_KEY_ESCAPE)
+	{
+		mlx_terminate(my_vars->mlx);
+		exit(0);
+	}
 	// if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
 	// 	my_vars->character.rotation_a += (3 * (M_PI / 180)) * my_vars->character.mv_side;
 	// if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
-	my_vars->character.rotation_a += (3 * (M_PI / 180)) * my_vars->character.mv_side;
-	my_vars->character.frames[0].img->instances[0].x += cos(my_vars->character.rotation_a) * 5 * my_vars->character.mv_dir;
-	my_vars->character.frames[0].img->instances[0].y += sin(my_vars->character.rotation_a) * 5 * my_vars->character.mv_dir;
+	my_vars->character.rotation_a += (3 * (M_PI / 180)) * my_vars->character.mv_degree;
+	printf("degree -> %f\n", (3 * (M_PI / 180)) * my_vars->character.mv_degree);
+	printf("x -> %f\n", ((cos(my_vars->character.rotation_a) * my_vars->character.mv_dir) + (sin(my_vars->character.rotation_a) * my_vars->character.mv_side)) * 5);
+	printf("y -> %f\n", ((sin(my_vars->character.rotation_a) * my_vars->character.mv_dir) - (cos(my_vars->character.rotation_a) * my_vars->character.mv_side)) * 5);
+	my_vars->character.frames[0].img->instances[0].x += ((cos(my_vars->character.rotation_a) * my_vars->character.mv_dir) + (sin(my_vars->character.rotation_a) * my_vars->character.mv_side)) * 5;
+	my_vars->character.frames[0].img->instances[0].y += ((sin(my_vars->character.rotation_a) * my_vars->character.mv_dir) - (cos(my_vars->character.rotation_a) * my_vars->character.mv_side)) * 5;
+
+	// my_vars->character.frames[0].img->instances[0].x += sin(my_vars->character.rotation_a) * 5 * my_vars->character.mv_side;
+    // my_vars->character.frames[0].img->instances[0].y -= cos(my_vars->character.rotation_a) * 5 * my_vars->character.mv_side;
 	if (keydata.key == MLX_KEY_W)
 	{
 		my_vars->character.mv_dir = 1;
@@ -39,10 +48,16 @@ void	key_hook(mlx_key_data_t keydata, void *vars)
 	{
 		my_vars->character.mv_side = -1;
 	}
+	if (keydata.key == MLX_KEY_LEFT)
+		my_vars->character.mv_degree = 1;
+	if (keydata.key == MLX_KEY_RIGHT)
+		my_vars->character.mv_degree = -1;
 	if ((keydata.key == MLX_KEY_D || keydata.key == MLX_KEY_A) && keydata.action == MLX_RELEASE)
 		my_vars->character.mv_side = 0;
 	if ((keydata.key == MLX_KEY_W || keydata.key == MLX_KEY_S) && keydata.action == MLX_RELEASE)
 		my_vars->character.mv_dir = 0;
+	if ((keydata.key == MLX_KEY_LEFT || keydata.key == MLX_KEY_RIGHT) && keydata.action == MLX_RELEASE)
+		my_vars->character.mv_degree = 0;
 }
 
 void	move_sides(int keycode, t_vars *vars)

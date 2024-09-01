@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 09:47:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/30 16:29:24 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/08/31 11:31:29 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_character
 	double		x;
 	double		y;
 	int			mv_side;
+	int			mv_degree;
 	int			mv_dir;
 }	t_character;
 
