@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:00:07 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/31 16:03:58 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/02 10:22:30 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	fill_count(t_vars *vars, char c, int i, int r)
 		vars->wall_count++;
 	else if (c == 'N' || c == 'S' || c == 'E' || c == 'W')
 	{
+		c = '0';
 		vars->character_count++;
 		vars->character.side = c;
 		vars->character.x = i;

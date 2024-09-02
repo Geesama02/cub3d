@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 10:52:58 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/29 11:21:15 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/02 10:11:58 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	handle_file(char *file, t_vars *vars, char **map, int *r)
 	return (1);
 }
 
-void	*count_elements(t_vars *vars, char *file)
+char	**count_elements(t_vars *vars, char *file)
 {
 	int		r;
 	int		row_count;
@@ -92,7 +92,7 @@ void	*count_elements(t_vars *vars, char *file)
 	if (vars->character_count != 1
 		|| vars->floor_count == 0 || vars->wall_count == 0)
 		return (handle_invalid_map(map, NULL, r));
-	free_memory(map, NULL, r);
-	return (vars);
+	// free_memory(map, NULL, r);
+	return (map);
 }
 

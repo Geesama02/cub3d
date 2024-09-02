@@ -10,8 +10,8 @@ int	main(int argc, char **argv)
 	// }
 	// mlx_t* mlx;
 	t_vars vars;
-
-	if (!count_elements(&vars, argv[1]))
+	vars.map = count_elements(&vars, argv[1]);
+	if (!vars.map)
 		return (2);
 	allocate_memory(&vars);
 	process_lines(&vars, argv[1]);

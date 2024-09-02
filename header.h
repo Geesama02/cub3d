@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 09:47:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/08/31 11:31:29 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/02 14:09:37 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ typedef struct s_vars
 	t_stuff_position	*wall_position;
 	t_character			character;
 	t_stuff_position	door;
+	char 				**map;
 	void				*mlx;
-	void				*win;
+	mlx_image_t				*win;
 	int					is_found;
 	int					steps;
 	int					character_count;
@@ -73,7 +74,7 @@ typedef struct s_vars
 
 void	*free_memory(char **map, char *line, int r);
 void	free_vars(t_vars *vars);
-void	*count_elements(t_vars *vars, char *file);
+char	**count_elements(t_vars *vars, char *file);
 int		get_map(t_vars *vars, char *filename);
 void	*handle_invalid_map(char **map, char *line, int r);
 void	init_vars(t_vars *vars);
