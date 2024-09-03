@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 09:47:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/09/02 14:09:37 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/02 17:41:46 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,8 @@ typedef struct s_vars
 	char 				**map;
 	void				*mlx;
 	mlx_image_t				*win;
-	int					is_found;
-	int					steps;
+	int					s_width;
+	int					s_height;
 	int					character_count;
 	int					monster_count;
 	int					door_count;
