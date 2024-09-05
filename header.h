@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 09:47:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/09/02 17:41:46 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/05 16:26:09 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <errno.h>
 # include <string.h>
 # include <math.h>
+# include <limits.h>
 # include "MLX42/include/MLX42/MLX42.h"
 # include "get-next-line/get_next_line.h"
 
@@ -62,6 +63,8 @@ typedef struct s_vars
 	char 				**map;
 	void				*mlx;
 	mlx_image_t				*win;
+	int					wall_x;
+	int					wall_y;
 	int					s_width;
 	int					s_height;
 	int					character_count;
@@ -88,5 +91,6 @@ void	start_game(t_vars *vars, int i, int j);
 void	free_and_perror(t_vars *vars, char *str);
 int	wall_check(int x, int y, int wall_count, t_vars *vars);
 void	move_sides(int keycode, t_vars *vars);
+void	set_imgs(t_vars *vars);
 
 #endif
