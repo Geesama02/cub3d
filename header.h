@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 09:47:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/09/05 16:26:09 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/06 11:35:56 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ typedef struct s_vars
 	char 				**map;
 	void				*mlx;
 	mlx_image_t				*win;
-	int					wall_x;
-	int					wall_y;
+	double					wall_x;
+	double					wall_y;
 	int					s_width;
 	int					s_height;
 	int					character_count;
