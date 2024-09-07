@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:27:24 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/09/07 17:14:28 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/07 17:41:47 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int	is_wall(t_vars *vars, int x, int y)
 {
 	printf("y wall -> %d | x wall -> %d\n", y, x);
 	// mlx_put_pixel(vars->win, x, y, 0xFF0000FF);
-	int x_axis = x / (32);
-	int y_axis = y / (32);
+	int x_axis = x / (8);
+	int y_axis = y / (8);
 	return (vars->map[y_axis][x_axis] == '1');
 }
 
@@ -64,21 +64,21 @@ void	get_v_intersect(t_vars *vars, double rotation)
 {
 	int my_x = vars->character.frames[0].img->instances[0].x;
 	int my_y = vars->character.frames[0].img->instances[0].y;
-	double x_intersect = ((my_x / 32) * 32);
+	double x_intersect = ((my_x / 8) * 8);
 	double y_intersect = 0;
 	double view_field = 60 * (M_PI / 180);
 	double rays = fmod((rotation - (view_field / 2)), M_PI * 2);
 	if (rays < 0)
 		rays += 2 * M_PI;
 	if (rays < 0.5 * M_PI || rays > 1.5 * M_PI)
-		x_intersect += (32);
+		x_intersect += (8);
 	if (fabs(tan(rays)) < 0.000001)
 		rays += 0.0001;
 	y_intersect = my_y + ((x_intersect - my_x) * tan(rays));
-	double next_x = 32;
+	double next_x = 8;
 	if (!(rays < (0.5 * M_PI) || rays > (1.5 * M_PI)))
 		next_x *= -1;
-	double next_y = (tan(rays) * 32);
+	double next_y = (tan(rays) * 8);
 	if (rays > M_PI && next_y > 0)
 		next_y *= -1;
 	if (rays <= M_PI && next_y < 0)
@@ -100,15 +100,15 @@ void	get_v_intersect(t_vars *vars, double rotation)
 	printf("len 2-> %f\n", get_line_len(vars, v_x, v_y));
 	printf("v_x -> %f | v_y -> %f\n", v_x, v_y);
 	printf("h_x -> %f | h_y -> %f\n", vars->wall_x, vars->wall_y);
-	if (vars->wall_x == 2147483647.000000)
-	{
-		if (!(rays < (0.5 * M_PI) || rays > (1.5 * M_PI)))
-			vars->wall_x = v_x + 1;
-		else
-			vars->wall_x = v_x;
-		vars->wall_y = v_y;
-		// return ;
-	}
+	// if (vars->wall_x == 2147483647.000000)
+	// {
+	// 	if (!(rays < (0.5 * M_PI) || rays > (1.5 * M_PI)))
+	// 		vars->wall_x = v_x + 1;
+	// 	else
+	// 		vars->wall_x = v_x;
+	// 	vars->wall_y = v_y;
+	// 	// return ;
+	// }
 	if ((get_line_len(vars, vars->wall_x, vars->wall_y) > get_line_len(vars, v_x, v_y)) && v_x < vars->s_width && v_y < vars->s_height && v_x > 0 && v_y > 0)
 	{
 		printf("inside\n");
@@ -118,16 +118,16 @@ void	get_v_intersect(t_vars *vars, double rotation)
 			vars->wall_x = v_x;
 		vars->wall_y = v_y;
 	}
-	if (v_x <= 0)
-	{
-		vars->wall_x = 0;
-		vars->wall_y = v_y;
-	}
-	else if (v_y <= 0)
-	{
-		vars->wall_x = v_x;
-		vars->wall_y = 0;
-	}
+	// if (v_x <= 0)
+	// {
+	// 	vars->wall_x = 0;
+	// 	vars->wall_y = v_y;
+	// }
+	// else if (v_y <= 0)
+	// {
+	// 	vars->wall_x = v_x;
+	// 	vars->wall_y = 0;
+	// }
 		
 	
 }
@@ -136,21 +136,21 @@ void	get_h_intersect(t_vars *vars, double rotation)
 {
 	int my_x = vars->character.frames[0].img->instances[0].x;
 	int my_y = vars->character.frames[0].img->instances[0].y;
-	double y_intersect = (my_y / 32) * 32;
+	double y_intersect = (my_y / 8) * 8;
 	double x_intersect = 0;
 	double view_field = 60 * (M_PI / 180);
 	double rays = fmod((rotation - (view_field / 2)), M_PI * 2);
 	if (rays < 0)
 		rays += 2 * M_PI;
 	if (rays < M_PI)
-		y_intersect += 32;
+		y_intersect += 8;
 	if (fabs(tan(rays)) < 0.000001)
 		rays += 0.0001;
 	x_intersect = my_x + ((y_intersect - my_y) / tan(rays));
-	double next_y = 32;
+	double next_y = 8;
 	if (rays > M_PI) 
 		next_y *= -1;
-	double next_x = (32 / tan(rays));
+	double next_x = (8 / tan(rays));
 	if ((rays < (0.5 * M_PI) || rays > (1.5 * M_PI)) && next_x < 0)
 		next_x *= -1;
 	else if (!(rays < (0.5 * M_PI) || rays > (1.5 * M_PI)) && next_x > 0)
@@ -361,14 +361,13 @@ void	set_imgs(t_vars *vars)
 
 void	start_game(t_vars *vars, int i, int j)
 {
-	// vars->chest_collected = 0;
 	vars->mlx = mlx_init(j * 32, i * 32, "cub3d", false);
 	if (vars->mlx == NULL)
 		free_and_perror(vars, "Error\nmlx init failed");
 	// vars->win = mlx_new_window(vars->mlx, j * 50, i * 50, "My Game");
-	vars->win = mlx_new_image(vars->mlx, j * 32, i * 32);
-	vars->s_height = i * 32;
-	vars->s_width = j * 32;
+	vars->win = mlx_new_image(vars->mlx, j * 8, i * 8);
+	vars->s_height = i * 8;
+	vars->s_width = j * 8;
 	printf("width -> %d | height -> %d\n", vars->s_width, vars->s_height);
 	if (!vars->win)
 		printf("Error\n");
