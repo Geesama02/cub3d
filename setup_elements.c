@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:39:23 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/09/07 15:29:29 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/09 10:43:28 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	process_walls(t_vars *vars, char character, int i, int l)
 
 	if (character == '1')
 	{
-		vars->wall_position[wall_count].x = l * 32 * 0.25;
-		vars->wall_position[wall_count].y = i * 32 * 0.25;
+		vars->wall_position[wall_count].x = l * 32;
+		vars->wall_position[wall_count].y = i * 32;
 		wall_count++;
 	}
 }
@@ -31,14 +31,14 @@ void	process_floor_and_player(t_vars *vars, char character, int i, int l)
 
 	if (character == '0' || character == 'N' || character == 'S' || character == 'E' || character == 'W')
 	{
-		vars->floor_position[floor_count].x = l * 32 * 0.25;
-		vars->floor_position[floor_count].y = i * 32 * 0.25;
+		vars->floor_position[floor_count].x = l * 32;
+		vars->floor_position[floor_count].y = i * 32;
 		floor_count++;
 	}
 	if (character == 'N' || character == 'S' || character == 'E' || character == 'W')
 	{
-		vars->character.x = l * 32 * 0.25;
-		vars->character.y = i * 32 * 0.25;
+		vars->character.x = l * 32;
+		vars->character.y = i * 32;
 	}
 }
 

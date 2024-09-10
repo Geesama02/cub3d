@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 11:00:07 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/09/04 14:49:17 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/09 10:53:36 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	init_vars(t_vars *vars)
 	vars->wall_count = 0;
 	vars->monster_count = 0;
 	vars->character_count = 0;
+	vars->view_field = 60 * (M_PI / 180);
 }
 
 int	fill_count(t_vars *vars, char c, int i, int r)

@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 09:47:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/09/07 17:34:59 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/09 11:53:03 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 # include "MLX42/include/MLX42/MLX42.h"
 # include "get-next-line/get_next_line.h"
 
-const int g_size = 32;
+// const int g_size = 32;
 
 typedef struct s_stuff_position
 {
@@ -65,10 +65,12 @@ typedef struct s_vars
 	char 				**map;
 	void				*mlx;
 	mlx_image_t				*win;
+	mlx_image_t				*map_img;
 	double					wall_x;
 	double					wall_y;
 	int					s_width;
 	int					s_height;
+	double					view_field;
 	int					character_count;
 	int					monster_count;
 	int					door_count;

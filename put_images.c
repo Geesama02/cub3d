@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:42:50 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/09/05 11:56:15 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/09 10:43:43 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	put_image(int count, t_vars *vars, void *path,
 	while (i < count)
 	{
 		mlx_image_to_window(vars->mlx,
-			path, position[i].x, position[i].y);
+			path, position[i].x * 0.25, position[i].y * 0.25);
 		i++;
 	}
 }
