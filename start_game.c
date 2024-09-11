@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:27:24 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/09/09 15:53:23 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/11 14:40:07 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void	get_v_intersect(t_vars *vars, double rotation)
 	if (rays < 0)
 		rays += 2 * M_PI;
 	if (rays < 0.5 * M_PI || rays > 1.5 * M_PI)
-		x_intersect += (8);
+		x_intersect += (32);
 	if (fabs(tan(rays)) < 0.000001)
 		rays += 0.0001;
 	y_intersect = my_y + ((x_intersect - my_x) * tan(rays));
@@ -111,7 +111,6 @@ void	get_v_intersect(t_vars *vars, double rotation)
 	// }
 	if ((get_line_len(vars, vars->wall_x, vars->wall_y) > get_line_len(vars, v_x, v_y)) && v_x < vars->s_width && v_y < vars->s_height && v_x > 0 && v_y > 0)
 	{
-		// printf("inside\n");
 		if (!(rays < (0.5 * M_PI) || rays > (1.5 * M_PI)))
 			vars->wall_x = v_x + 1;
 		else
@@ -180,22 +179,26 @@ void	get_h_intersect(t_vars *vars, double rotation)
 		vars->wall_y = INT_MAX;
 	}
 }
-void draw_rectangle(void *mlx, int start_x, int start_y, int width, int height)
+void draw_rectangle(void *mlx, int start_x, int start_y, int width, int height, int color)
 {
     int x;
 	int y;
 
+	if (start_x < 0) 
+		start_x = 0;
+    if (start_y < 0)
+		start_y = 0;
 	x = start_x;
 	y = start_y;
 	// printf("start_x > %d | start_y > %d\n", start_x, start_y);
 	// printf("width > %d | heigth > %d\n", width, height);
-    while (y < start_y + height && y > 0)
+    while (y < start_y + height && y < 960)
     {
 		x = start_x;
-        while (x < start_x + width && x > 0)
+        while (x < start_x + width && x < 1600)
         {
 			// printf("x > %d | y > %d\n", x, y);
-            mlx_put_pixel(mlx, x, y, 0xFFFFFFFF);
+            mlx_put_pixel(mlx, x, y, color);
 			x++;
         }
 		y++;
@@ -222,7 +225,7 @@ void	key_hook(mlx_key_data_t keydata, void *vars)
 		mlx_terminate(my_vars->mlx);
 		exit(0);
 	}
-	my_vars->character.rotation_a += (5 * (M_PI / 180)) * my_vars->character.mv_degree;
+	my_vars->character.rotation_a += (3 * (M_PI / 180)) * my_vars->character.mv_degree;
 	int x_move = ((cos(my_vars->character.rotation_a) * my_vars->character.mv_dir) + (sin(my_vars->character.rotation_a) * my_vars->character.mv_side)) * 8;
 	int y_move = ((sin(my_vars->character.rotation_a) * my_vars->character.mv_dir) - (cos(my_vars->character.rotation_a) * my_vars->character.mv_side)) * 8;
 	// if (keydata.key == MLX_KEY_RIGHT && keydata.action == MLX_PRESS)
@@ -283,21 +286,13 @@ void	key_hook(mlx_key_data_t keydata, void *vars)
 	// my_vars->character.frames[0].img->instances[0].x += sin(my_vars->character.rotation_a) * 5 * my_vars->character.mv_side;
     // my_vars->character.frames[0].img->instances[0].y -= cos(my_vars->character.rotation_a) * 5 * my_vars->character.mv_side;
 	if (keydata.key == MLX_KEY_W)
-	{
 		my_vars->character.mv_dir = 1;
-	}
 	if (keydata.key == MLX_KEY_S)
-	{
 		my_vars->character.mv_dir = -1;
-	}
 	if (keydata.key == MLX_KEY_A)
-	{
-		my_vars->character.mv_side = 1;
-	}
-	if (keydata.key == MLX_KEY_D)
-	{
 		my_vars->character.mv_side = -1;
-	}
+	if (keydata.key == MLX_KEY_D)
+		my_vars->character.mv_side = 1;
 	if (keydata.key == MLX_KEY_LEFT)
 		my_vars->character.mv_degree = 1;
 	if (keydata.key == MLX_KEY_RIGHT)
@@ -329,55 +324,71 @@ void	render_next_frame(void *var)
 	t_vars *vars = var;
 	int my_x = vars->character.frames[0].img->instances[0].x;
 	int my_y = vars->character.frames[0].img->instances[0].y;
-	double ray_step = vars->view_field / vars->s_width;
-	// clear_image(vars->map_img);
+	// double view_field = 60 * (M_PI / 180);
+	// int rays_num = my_vars->s_width;
+	double ray_step = vars->view_field / 1600;
 	clear_image(vars->win);
+	// clear_image(vars->map_img);
 	// clear_image(vars->wall_position->img);
 	// clear_image(vars->floor_position->img);
 	// clear_image(vars->character.frames[0].img);
 	// mlx_delete_image(vars->mlx, vars->wall_position->img);
 	// mlx_delete_image(vars->mlx, vars->floor_position->img);
 	// mlx_delete_image(vars->mlx, vars->character.frames[0].img);
-	// mlx_delete_image(vars->mlx, vars->map_img);
+	mlx_delete_image(vars->mlx, vars->map_img);
 	// mlx_delete_image(vars->mlx, vars->win);
-	// vars->win = mlx_new_image(vars->mlx, vars->s_width, vars->s_height);
+	// vars->win = mlx_new_image(vars->mlx, 1600, 960);
 	// set_imgs(vars);
+	vars->map_img = mlx_new_image(vars->mlx, vars->s_width * 0.25, vars->s_height * 0.25);
+	// mlx_image_to_window(vars->mlx,
+	// 	vars->win, 0, 0);
+	mlx_image_to_window(vars->mlx, vars->map_img, 0, 0);
 	// put_image(vars->wall_count, vars, vars->wall_position->img,
 	// 	vars->wall_position);
 	// put_image(vars->floor_count, vars, vars->floor_position->img,
 	// 	vars->floor_position);
-	// vars->map_img = mlx_new_image(vars->mlx, vars->s_width * 0.25, vars->s_height * 0.25);
-	// mlx_image_to_window(vars->mlx,
-	// 	vars->win, 0, 0);
-	// mlx_image_to_window(vars->mlx,
-	// 	vars->map_img, 0, 0);
 	// // set_imgs(vars);
 	// mlx_image_to_window(vars->mlx,
 	// vars->character.frames[0].img, my_x, my_y);
 	// printf("width %d\n", vars->s_width);
 	double distancePlane;
+	double wall_height;
 	// printf("height %d\n", vars->s_height);
 	int i = 0;
-	while (i < vars->s_width)
+	distancePlane = (1600 / 2) / tan(vars->view_field / 2);
+	while (i < 1600)
 	{
-		double ray_angle = vars->character.rotation_a + (ray_step * i);
+		double ray_angle = vars->character.rotation_a - (vars->view_field / 2) + (ray_step * i);
+		ray_angle = fmod(ray_angle, 2 * M_PI);
 		if (ray_angle < 0)
 			ray_angle += 2 * M_PI;
 		get_h_intersect(vars, ray_angle);
 		get_v_intersect(vars, ray_angle);
-		if (fabs(tan(vars->view_field / 2)) < 0.000001)
-			distancePlane = (vars->s_width / 2) / 0.0001;
+		// if (fabs(tan(vars->view_field / 2)) < 0.000001)
+		// 	distancePlane = (1600 / 2) / 0.0001;
+		// else
+		double distance = get_line_len(vars, vars->wall_x, vars->wall_y) * cos(ray_angle - vars->character.rotation_a);
+		
+		if (distance == 0.000000)
+			wall_height = 32 * distancePlane;
 		else
-			distancePlane = (vars->s_width / 2) / tan(vars->view_field / 2);
-		double distance = get_line_len(vars, vars->wall_x, vars->wall_y);
-		double wall_height = (32 / distance) * distancePlane;
-		// printf("vars->wall_x -> %f\n", vars->wall_x);
+			wall_height = (32 / distance) * distancePlane;
+		// if (i == 0)
+		// 	printf("first distance -> %f\n", wall_height);
+		// else if (i == 1599)
+		// 	printf("last distance -> %f\n", wall_height);
 		// printf("vars->wall_y -> %f\n", vars->wall_y);
 		// mlx_put_pixel(vars->win, vars->wall_x, vars->wall_y, 0xFF0000FF);
-		draw_rectangle(vars->win, i, (((vars->s_height) / 2) - (wall_height / 2)), 1, wall_height);
+		// if (i >= 800)
+		// 	draw_rectangle(vars->win, i, (((960) / 2) - (wall_height / 2)), 1, wall_height, 0xFF0000FF);
+		// else
+		draw_rectangle(vars->win, i, (((960) / 2) - (wall_height / 2)), 1, wall_height, 0xFFFFFFFF);
 		draw_line(vars, (my_x) * 0.25, (my_y) * 0.25, vars->wall_x * 0.25, vars->wall_y * 0.25, 0xFF0000FF);
 		i++;
 	}
+	get_h_intersect(vars, vars->character.rotation_a);
+	get_v_intersect(vars, vars->character.rotation_a);
+	draw_line(vars, (my_x) * 0.25, (my_y) * 0.25, vars->wall_x * 0.25, vars->wall_y * 0.25, 0x00FF00FF);
 }
 
 void	set_imgs(t_vars *vars)
@@ -385,10 +396,6 @@ void	set_imgs(t_vars *vars)
 	mlx_texture_t *img = mlx_load_png("./imgs/floor.png");
 	mlx_texture_t *img2 = mlx_load_png("./imgs/wall.png");
 	mlx_texture_t *img3 = mlx_load_png("./imgs/ball.png");
-	// img->height = 32;
-	// img->width = 32;
-	// img2->height = 32;
-	// img2->width = 32;
 	img->height *= 0.25;
 	img->width *= 0.25;
 	img2->height *= 0.25;
@@ -409,7 +416,7 @@ void	set_imgs(t_vars *vars)
 
 void	start_game(t_vars *vars, int i, int j)
 {
-	vars->mlx = mlx_init(j * 32, i * 32, "cub3d", false);
+	vars->mlx = mlx_init(1600, 960, "cub3d", false);
 	if (vars->mlx == NULL)
 		free_and_perror(vars, "Error\nmlx init failed");
 	// vars->win = mlx_new_window(vars->mlx, j * 50, i * 50, "My Game");
@@ -422,17 +429,16 @@ void	start_game(t_vars *vars, int i, int j)
 	// 	free_and_perror(vars, "Error\nmlx window failed");
 	mlx_key_hook(vars->mlx, key_hook, vars);
 	set_imgs(vars);
-	vars->character.current_frame = 0;
+	vars->win = mlx_new_image(vars->mlx, 1600, 960);
+	vars->map_img = mlx_new_image(vars->mlx, j * 8, i * 8);
+	mlx_image_to_window(vars->mlx,
+		vars->win, 0, 0);
 	put_image(vars->wall_count, vars, vars->wall_position->img,
 		vars->wall_position);
 	put_image(vars->floor_count, vars, vars->floor_position->img,
 		vars->floor_position);
-	vars->win = mlx_new_image(vars->mlx, j * 32, i * 32);
-	vars->map_img = mlx_new_image(vars->mlx, j * 8, i * 8);
 	mlx_image_to_window(vars->mlx,
 			vars->character.frames[0].img, vars->character.x, vars->character.y);
-	mlx_image_to_window(vars->mlx,
-		vars->win, 0, 0);
 	mlx_image_to_window(vars->mlx,
 		vars->map_img, 0, 0);
 	// mlx_image_to_window(vars->mlx,
