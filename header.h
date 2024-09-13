@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 09:47:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/09/09 11:53:03 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/12 14:48:49 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ typedef struct s_vars
 	t_stuff_position	*wall_position;
 	t_character			character;
 	t_stuff_position	door;
+	mlx_texture_t		*texture;
 	char 				**map;
 	void				*mlx;
 	mlx_image_t				*win;
@@ -96,5 +97,10 @@ void	free_and_perror(t_vars *vars, char *str);
 int	wall_check(int x, int y, int wall_count, t_vars *vars);
 void	move_sides(int keycode, t_vars *vars);
 void	set_imgs(t_vars *vars);
+int get_rgba(int r, int g, int b, int a);
+int get_r(int rgba);
+int get_g(int rgba);
+int get_b(int rgba);
+int get_a(int rgba);
 
 #endif
