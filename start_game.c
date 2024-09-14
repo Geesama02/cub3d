@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:27:24 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/09/13 11:58:56 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/14 12:26:23 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ void draw_rectangle(t_vars *vars, int start_x, int start_y, int width, int heigh
 	int y;
 
 	(void)color;
-	if (start_x < 0) 
+	if (start_x < 0)
 		start_x = 0;
     if (start_y < 0)
 		start_y = 0;
@@ -177,15 +177,21 @@ void draw_rectangle(t_vars *vars, int start_x, int start_y, int width, int heigh
 	// color = get_rgba(tex->pixels[(int)vars->wall_y % 32], tex->pixels[(int)(vars->wall_y + 1) % 32], tex->pixels[(int)(vars->wall_y + 2) % 32], tex->pixels[(int)(vars->wall_y + 3) % 32]);
 	// printf("start_x > %d | start_y > %d\n", start_x, start_y);
 	// printf("width > %d | heigth > %d\n", width, height);
+	// int y_step = 32.0 / height;
+	// int ty = 0;
     while (y < start_y + height && y < 960)
     {
 		x = start_x;
         while (x < start_x + width && x < 1600)
         {
-			int index = (y * tex->width + ((int)vars->wall_x % 32));
+			int tex_x = (start_x) ;
+            int tex_y = (y - start_y) * tex->height / height;
+
+            int index = (tex_y * tex->width + tex_x % 32) * 4;
+			// int index = ((y) * (tex->height / height)) * tex->width + (((int)start_x % tex->width)) * 4;
 			color = get_rgba(tex->pixels[index], tex->pixels[index + 1], tex->pixels[index + 2], tex->pixels[index + 3]);
 			// printf("x > %d | y > %d\n", x, y);
-            mlx_put_pixel(vars->win, x, y, color);
+            mlx_put_pixel(vars->win, x, y, color); 
 			x++;
         }
 		y++;
@@ -315,29 +321,9 @@ void	render_next_frame(void *var)
 	// int rays_num = my_vars->s_width;
 	double ray_step = vars->view_field / 1600;
 	clear_image(vars->win);
-	// clear_image(vars->map_img);
-	// clear_image(vars->wall_position->img);
-	// clear_image(vars->floor_position->img);
-	// clear_image(vars->character.frames[0].img);
-	// mlx_delete_image(vars->mlx, vars->wall_position->img);
-	// mlx_delete_image(vars->mlx, vars->floor_position->img);
-	// mlx_delete_image(vars->mlx, vars->character.frames[0].img);
 	mlx_delete_image(vars->mlx, vars->map_img);
-	// mlx_delete_image(vars->mlx, vars->win);
-	// vars->win = mlx_new_image(vars->mlx, 1600, 960);
-	// set_imgs(vars);
 	vars->map_img = mlx_new_image(vars->mlx, vars->s_width * 0.25, vars->s_height * 0.25);
-	// mlx_image_to_window(vars->mlx,
-	// 	vars->win, 0, 0);
 	mlx_image_to_window(vars->mlx, vars->map_img, 0, 0);
-	// put_image(vars->wall_count, vars, vars->wall_position->img,
-	// 	vars->wall_position);
-	// put_image(vars->floor_count, vars, vars->floor_position->img,
-	// 	vars->floor_position);
-	// // set_imgs(vars);
-	// mlx_image_to_window(vars->mlx,
-	// vars->character.frames[0].img, my_x, my_y);
-	// printf("width %d\n", vars->s_width);
 	double distancePlane;
 	double wall_height;
 	double ray_angle = vars->character.rotation_a - (vars->view_field / 2);
@@ -396,7 +382,7 @@ void	render_next_frame(void *var)
 
 void	set_imgs(t_vars *vars)
 {
-	vars->texture = mlx_load_png("./imgs/wall_texture.png");
+	vars->texture = mlx_load_png("./imgs/wall_texture 2.png");
 	// vars->texture->width = 32;
 	// vars->texture->height = 32;
 	mlx_texture_t *img = mlx_load_png("./imgs/floor.png");
