@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:27:24 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/09/14 12:26:23 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/14 15:55:28 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,12 +160,13 @@ void	get_h_intersect(t_vars *vars, double rotation)
 		vars->wall_y = INT_MAX;
 	}
 }
-void draw_rectangle(t_vars *vars, int start_x, int start_y, int width, int height, int color)
+void draw_rectangle(t_vars *vars, int start_x, int start_y, int is_vert, int height, int color)
 {
     int x;
 	int y;
 
 	(void)color;
+	int	tex_x;
 	if (start_x < 0)
 		start_x = 0;
     if (start_y < 0)
@@ -182,16 +183,20 @@ void draw_rectangle(t_vars *vars, int start_x, int start_y, int width, int heigh
     while (y < start_y + height && y < 960)
     {
 		x = start_x;
-        while (x < start_x + width && x < 1600)
+        while (x < start_x + 1 && x < 1600)
         {
-			int tex_x = (start_x) ;
+			if (is_vert)
+				tex_x = (int)(vars->wall_y) % tex->width;
+			else
+				tex_x = (int)(vars->wall_x) % tex->width;
             int tex_y = (y - start_y) * tex->height / height;
 
-            int index = (tex_y * tex->width + tex_x % 32) * 4;
+            int index = (tex_y * tex->width + tex_x) * 4;
+			// printf("index -> %d\n", index);
 			// int index = ((y) * (tex->height / height)) * tex->width + (((int)start_x % tex->width)) * 4;
 			color = get_rgba(tex->pixels[index], tex->pixels[index + 1], tex->pixels[index + 2], tex->pixels[index + 3]);
 			// printf("x > %d | y > %d\n", x, y);
-            mlx_put_pixel(vars->win, x, y, color); 
+            mlx_put_pixel(vars->win, x, y, color);
 			x++;
         }
 		y++;
@@ -244,7 +249,6 @@ void	key_hook(mlx_key_data_t keydata, void *vars)
 		// draw_line(vars, my_x, my_y, ray_end_x, ray_end_y);
 		my_vars->character.frames[0].img->instances[0].x += x_move;
 		my_vars->character.frames[0].img->instances[0].y += y_move;
-
 		// int i = 1;
 		// double ray = ; 
 		// double rays = fmod(my_vars->character.rotation_a - (view_field / 2), M_PI * 2);
@@ -369,7 +373,7 @@ void	render_next_frame(void *var)
 		// printf("distamce = > %f\n", distance);
 		// int horz = 255;
 		int color = get_rgba(vars->texture->pixels[(int)vars->wall_y % 32], vars->texture->pixels[(int)(vars->wall_y + 1) % 32], vars->texture->pixels[(int)(vars->wall_y + 2) % 32], vars->texture->pixels[(int)(vars->wall_y + 3) % 32]);
-		draw_rectangle(vars, i, (((960) / 2) - (wall_height / 2)), 1, wall_height, color);
+		draw_rectangle(vars, i, (((960) / 2) - (wall_height / 2)), is_vert, wall_height, color);
 		draw_line(vars, (my_x) * 0.25, (my_y) * 0.25, vars->wall_x * 0.25, vars->wall_y * 0.25, 0xFF0000FF);
 		i++;
 	}
@@ -382,7 +386,8 @@ void	render_next_frame(void *var)
 
 void	set_imgs(t_vars *vars)
 {
-	vars->texture = mlx_load_png("./imgs/wall_texture 2.png");
+	// vars->texture = mlx_load_png("./imgs/wall_texture.png");
+	vars->texture = mlx_load_png("./imgs/osaka4.png");
 	// vars->texture->width = 32;
 	// vars->texture->height = 32;
 	mlx_texture_t *img = mlx_load_png("./imgs/floor.png");
