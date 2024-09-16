@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 09:47:51 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/09/12 14:48:49 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/15 09:38:56 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,10 @@ typedef struct s_vars
 	t_stuff_position	*wall_position;
 	t_character			character;
 	t_stuff_position	door;
-	mlx_texture_t		*texture;
+	mlx_texture_t		*front_wall;
+	mlx_texture_t		*back_wall;
+	mlx_texture_t		*left_wall;
+	mlx_texture_t		*right_wall;
 	char 				**map;
 	void				*mlx;
 	mlx_image_t				*win;

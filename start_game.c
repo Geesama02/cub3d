@@ -6,7 +6,7 @@
 /*   By: oait-laa <oait-laa@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/29 13:27:24 by oait-laa          #+#    #+#             */
-/*   Updated: 2024/09/14 15:55:28 by oait-laa         ###   ########.fr       */
+/*   Updated: 2024/09/16 11:47:34 by oait-laa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,12 +160,11 @@ void	get_h_intersect(t_vars *vars, double rotation)
 		vars->wall_y = INT_MAX;
 	}
 }
-void draw_rectangle(t_vars *vars, int start_x, int start_y, int is_vert, int height, int color)
+void draw_rectangle(t_vars *vars, int start_x, int start_y, mlx_texture_t *tex, int height, int is_vert)
 {
     int x;
 	int y;
 
-	(void)color;
 	int	tex_x;
 	if (start_x < 0)
 		start_x = 0;
@@ -173,8 +172,10 @@ void draw_rectangle(t_vars *vars, int start_x, int start_y, int is_vert, int hei
 		start_y = 0;
 	x = start_x;
 	y = start_y;
+	int color;
 	// int color;
-	mlx_texture_t *tex = vars->texture;
+	// mlx_texture_t *front_tex = vars->front_wall;
+	// mlx_texture_t *right_tex = vars->right_wall;
 	// color = get_rgba(tex->pixels[(int)vars->wall_y % 32], tex->pixels[(int)(vars->wall_y + 1) % 32], tex->pixels[(int)(vars->wall_y + 2) % 32], tex->pixels[(int)(vars->wall_y + 3) % 32]);
 	// printf("start_x > %d | start_y > %d\n", start_x, start_y);
 	// printf("width > %d | heigth > %d\n", width, height);
@@ -186,16 +187,15 @@ void draw_rectangle(t_vars *vars, int start_x, int start_y, int is_vert, int hei
         while (x < start_x + 1 && x < 1600)
         {
 			if (is_vert)
-				tex_x = (int)(vars->wall_y) % tex->width;
+				tex_x = (int)vars->wall_y % tex->width;
 			else
-				tex_x = (int)(vars->wall_x) % tex->width;
-            int tex_y = (y - start_y) * tex->height / height;
-
+				tex_x = (int)vars->wall_x % tex->width;
+			int topDistsance = y + (height / 2) - (960 / 2);
+            int tex_y = topDistsance * ((float)tex->height / height);
             int index = (tex_y * tex->width + tex_x) * 4;
 			// printf("index -> %d\n", index);
 			// int index = ((y) * (tex->height / height)) * tex->width + (((int)start_x % tex->width)) * 4;
 			color = get_rgba(tex->pixels[index], tex->pixels[index + 1], tex->pixels[index + 2], tex->pixels[index + 3]);
-			// printf("x > %d | y > %d\n", x, y);
             mlx_put_pixel(vars->win, x, y, color);
 			x++;
         }
@@ -231,65 +231,20 @@ void	key_hook(mlx_key_data_t keydata, void *vars)
 	// if (keydata.key == MLX_KEY_LEFT && keydata.action == MLX_PRESS)
 	int x_axis = (my_x + x_move);
 	int y_axis = (my_y + y_move);
-	// printf("my_x -> %d\n", my_x);
-	// printf("my_y -> %d\n", my_y);
-	// printf("x_axis -> %d\n", x_axis);
-	// printf("y_axis -> %d\n", y_axis);
 	if (!is_wall(my_vars, x_axis, y_axis))
 	{
-		// printf("degree -> %f\n", my_vars->character.rotation_a);
-		// double view_field = 60 * (M_PI / 180);
-		// printf("ray degree -> %f\n", my_vars->character.rotation_a);
-		// double ray_step = view_field / rays_num;
-		// int ray_end_x = my_x + cos(my_vars->character.rotation_a) * 60;
-		// int ray_end_y = my_y + sin(my_vars->character.rotation_a) * 60;
-		// printf("x -> %d\n", ray_end_x);
-		// printf("y -> %d\n", ray_end_y);
-		// mlx_put_pixel(my_vars->win, ray_end_x, ray_end_y, 0xFF0000FF);
-		// draw_line(vars, my_x, my_y, ray_end_x, ray_end_y);
 		my_vars->character.frames[0].img->instances[0].x += x_move;
 		my_vars->character.frames[0].img->instances[0].y += y_move;
-		// int i = 1;
-		// double ray = ; 
-		// double rays = fmod(my_vars->character.rotation_a - (view_field / 2), M_PI * 2);
-		// // printf("rotation -> %f | vf -> %f\n", my_vars->character.rotation_a, view_field / 2);
-		// if (fabs(tan(rays)) < 0.000001)
-		// 	rays += 0.01;
-		
-		// printf("next_x %d\n", next_x);
-
-		// x_intersect = (my_x / 32) * 32;
-		// y_intersect = my_y + ((my_x - x_intersect) * tan(rays));
-		// mlx_put_pixel(my_vars->win, x_intersect, y_intersect, 0xFF0000FF);
-		// while (i < rays_num)
-		// {
-		// 	if (fabs(tan(rays)) >= 0.000001)
-		// 	{
-		// 		x_intersect = my_x + ((my_y - y_intersect) / tan(rays));
-		// 		printf("ray %f\n", rays);
-		// 		printf("tan %f\n", tan(rays));
-		// 		printf("x_inter %d | y_inter %d\n", x_intersect, y_intersect);
-		// 		draw_line(my_vars,my_x, my_y, x_intersect, y_intersect);
-		// 		mlx_put_pixel(my_vars->win, x_intersect, y_intersect, 0xFF0000FF);
-		// 	} 
-		// 	rays += view_field / rays_num;
-		// 	i++;
-		// }
-		// printf("x -> %f\n", ((cos(my_vars->character.rotation_a) * my_vars->character.mv_dir) + (sin(my_vars->character.rotation_a) * my_vars->character.mv_side)) * 5);
-		// printf("y -> %f\n", ((sin(my_vars->character.rotation_a) * my_vars->character.mv_dir) - (cos(my_vars->character.rotation_a) * my_vars->character.mv_side)) * 5);
-        // mlx_put_pixel(my_vars->win, my_x, my_y, 0xFF0000FF);
 
 	}
-	// my_vars->character.frames[0].img->instances[0].x += sin(my_vars->character.rotation_a) * 5 * my_vars->character.mv_side;
-    // my_vars->character.frames[0].img->instances[0].y -= cos(my_vars->character.rotation_a) * 5 * my_vars->character.mv_side;
 	if (keydata.key == MLX_KEY_W)
 		my_vars->character.mv_dir = 1;
 	if (keydata.key == MLX_KEY_S)
 		my_vars->character.mv_dir = -1;
 	if (keydata.key == MLX_KEY_A)
-		my_vars->character.mv_side = -1;
-	if (keydata.key == MLX_KEY_D)
 		my_vars->character.mv_side = 1;
+	if (keydata.key == MLX_KEY_D)
+		my_vars->character.mv_side = -1;
 	if (keydata.key == MLX_KEY_LEFT)
 		my_vars->character.mv_degree = -1;
 	if (keydata.key == MLX_KEY_RIGHT)
@@ -316,6 +271,25 @@ void clear_image(mlx_image_t* img) {
 		y++;
     }
 }
+
+mlx_texture_t *get_texture(t_vars *vars, int is_vert)
+{
+	if (is_vert)
+	{
+		if (is_wall(vars, vars->wall_x - 1, vars->wall_y))
+			return (vars->right_wall);
+		else
+			return  (vars->left_wall);
+	}
+	else
+	{
+		if (is_wall(vars, vars->wall_x, vars->wall_y - 1))
+			return (vars->front_wall);
+		else
+			return (vars->back_wall);
+	}
+}
+
 void	render_next_frame(void *var)
 {
 	t_vars *vars = var;
@@ -372,8 +346,9 @@ void	render_next_frame(void *var)
 		// distance = 255 / distance;
 		// printf("distamce = > %f\n", distance);
 		// int horz = 255;
-		int color = get_rgba(vars->texture->pixels[(int)vars->wall_y % 32], vars->texture->pixels[(int)(vars->wall_y + 1) % 32], vars->texture->pixels[(int)(vars->wall_y + 2) % 32], vars->texture->pixels[(int)(vars->wall_y + 3) % 32]);
-		draw_rectangle(vars, i, (((960) / 2) - (wall_height / 2)), is_vert, wall_height, color);
+		mlx_texture_t *wall_tex = get_texture(vars, is_vert);
+		// int color = get_rgba(vars->front_wall->pixels[(int)vars->wall_y % 32], vars->front_wall->pixels[(int)(vars->wall_y + 1) % 32], vars->front_wall->pixels[(int)(vars->wall_y + 2) % 32], vars->front_wall->pixels[(int)(vars->wall_y + 3) % 32]);
+		draw_rectangle(vars, i, (((960) / 2) - (wall_height / 2)), wall_tex, wall_height, is_vert);
 		draw_line(vars, (my_x) * 0.25, (my_y) * 0.25, vars->wall_x * 0.25, vars->wall_y * 0.25, 0xFF0000FF);
 		i++;
 	}
@@ -386,10 +361,13 @@ void	render_next_frame(void *var)
 
 void	set_imgs(t_vars *vars)
 {
-	// vars->texture = mlx_load_png("./imgs/wall_texture.png");
-	vars->texture = mlx_load_png("./imgs/osaka4.png");
-	// vars->texture->width = 32;
-	// vars->texture->height = 32;
+	// vars->front_wall = mlx_load_png("./imgs/wall_texture.png");
+	vars->front_wall = mlx_load_png("./imgs/osaka4.png");
+	vars->back_wall = mlx_load_png("./imgs/osaka2.png");
+	vars->right_wall = mlx_load_png("./imgs/bochi2.png");
+	vars->left_wall = mlx_load_png("./imgs/bochi.png");
+	// vars->front_wall->width = 32;
+	// vars->front_wall->height = 32;
 	mlx_texture_t *img = mlx_load_png("./imgs/floor.png");
 	mlx_texture_t *img2 = mlx_load_png("./imgs/wall.png");
 	mlx_texture_t *img3 = mlx_load_png("./imgs/ball.png");
@@ -410,6 +388,12 @@ void	set_imgs(t_vars *vars)
 	}
 }
 
+void *mouse_hook(int button, int x, int y, void *param)
+{
+    t_vars *vars = (t_vars *)param;
+
+    printf("Button %d was pressed at (%d, %d)\n", button, x, y);
+}
 
 void	start_game(t_vars *vars, int i, int j)
 {
@@ -425,6 +409,7 @@ void	start_game(t_vars *vars, int i, int j)
 	// if (vars->win == NULL)
 	// 	free_and_perror(vars, "Error\nmlx window failed");
 	mlx_key_hook(vars->mlx, key_hook, vars);
+	mlx_mouse_hook(vars->mlx, mouse_hook, vars);
 	set_imgs(vars);
 	vars->win = mlx_new_image(vars->mlx, 1600, 960);
 	vars->map_img = mlx_new_image(vars->mlx, j * 8, i * 8);
@@ -440,8 +425,8 @@ void	start_game(t_vars *vars, int i, int j)
 		vars->map_img, 0, 0);
 	printf("color -> %d\n", get_rgba(255, 0, 0, 255));
 	printf("color -> %d\n", 0xFF0000FF);
-	printf("texture w -> %d\n", vars->texture->width);
-	printf("texture h -> %d\n", vars->texture->height);
+	printf("texture w -> %d\n", vars->front_wall->width);
+	printf("texture h -> %d\n", vars->front_wall->height);
 	// mlx_image_to_window(vars->mlx,
 	// 		vars->character.frames[0].img, 654, 248);
 	// mlx_put_pixel(vars->win, 0, 0, 0xFF0000FF);
